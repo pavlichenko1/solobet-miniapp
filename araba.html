@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoloBet - Online Casino</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 20px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .logo-text {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ffd700, #ff6b00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-greeting {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .user-greeting strong {
+            color: #ffd700;
+        }
+
+        .bonus-card {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bonus-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .bonus-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b00, #ff8c00);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .bonus-amount {
+            font-size: 56px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ff6b00, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 10px 0;
+            text-shadow: 0 2px 10px rgba(255, 107, 0, 0.3);
+        }
+
+        .bonus-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2d3748;
+            margin: 15px 0;
+        }
+
+        .bonus-description {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .feature-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .feature-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #ffd700, #ff6b00);
+            color: #000;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 20px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 107, 0, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(255, 107, 0, 0.5);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+        }
+
+        .info-text {
+            text-align: center;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 15px;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <span class="logo-icon">🎰</span>
+            <span class="logo-text">SoloBet</span>
+        </div>
+        <div class="subtitle">Premium Online Casino</div>
+    </div>
+
+    <div class="container">
+        <div class="welcome-card">
+            <div class="user-greeting" id="greeting">
+                Hoş geldiniz! 👋
+            </div>
+        </div>
+
+        <div class="bonus-card pulse">
+            <span class="bonus-badge">🎁 Hoş Geldin Bonusu</span>
+            <div class="bonus-amount">1000₺</div>
+            <div class="bonus-title">DENEME BONUSU</div>
+            <div class="bonus-description">
+                Yeni üyelere özel, ilk yatırımınızda %100 bonus!
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <div class="feature-title">Hızlı Çekim</div>
+                <div class="feature-text">Anında para çekme</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎮</div>
+                <div class="feature-title">Canlı Casino</div>
+                <div class="feature-text">Gerçek krupiyeler</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚽</div>
+                <div class="feature-title">Spor Bahis</div>
+                <div class="feature-text">En iyi oranlar</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-title">Güvenli</div>
+                <div class="feature-text">SSL korumalı</div>
+            </div>
+        </div>
+
+        <button class="cta-button" id="registerBtn">
+            Hemen Kayıt Ol 🚀
+        </button>
+
+        <div class="info-text">
+            18+ | Sorumlu Oyun | Lisanslı Platform
+        </div>
+    </div>
+
+    <script>
+        // Telegram WebApp API'sini başlat
+        let tg = window.Telegram.WebApp;
+        
+        // Kullanıcı bilgisini al ve karşılama mesajı göster
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            const user = tg.initDataUnsafe.user;
+            const greeting = document.getElementById('greeting');
+            greeting.innerHTML = `Hoş geldiniz, <strong>${user.first_name}</strong>! 👋`;
+        }
+        
+        // Ana düğmeyi yapılandır
+        tg.MainButton.setText('KAYIT OL VE BONUS AL 🎁');
+        tg.MainButton.color = '#ffd700';
+        tg.MainButton.textColor = '#000000';
+        tg.MainButton.show();
+        
+        // Ana düğme tıklama eventi
+        tg.MainButton.onClick(function() {
+            tg.showPopup({
+                title: '🎉 Tebrikler!',
+                message: 'Kayıt işleminiz başlatıldı. Bonus hesabınıza tanımlanacak!',
+                buttons: [
+                    {id: 'ok', type: 'ok', text: 'Harika!'}
+                ]
+            }, function(buttonId) {
+                if (buttonId === 'ok') {
+                    // Bot'a veri gönder
+                    tg.sendData(JSON.stringify({
+                        action: 'register',
+                        user_id: tg.initDataUnsafe.user?.id,
+                        timestamp: Date.now()
+                    }));
+                }
+            });
+        });
+        
+        // Sayfa içi kayıt butonu
+        document.getElementById('registerBtn').addEventListener('click', function() {
+            tg.MainButton.onClick();
+        });
+        
+        // Tema renklerini uygula
+        if (tg.themeParams) {
+            document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color || '#1e3c72');
+        }
+        
+        // Uygulamanın hazır olduğunu bildir
+        tg.ready();
+        tg.expand();
+    </script>
+</body>
+</html>
